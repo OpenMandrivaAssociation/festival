@@ -1,7 +1,7 @@
 Summary: 	A free speech synthesizer 
 Name:  		festival
-Version: 	1.95
-Release: 	%mkrel 2
+Version: 	1.96
+Release: 	%mkrel 1
 License: 	BSD
 Group: 		Sound
 URL: 		http://www.cstr.ed.ac.uk/projects/festival/
@@ -67,9 +67,9 @@ applications using festival.
 #%patch21 -p1 -b .fv_c++
 #%patch22 -p1 -b .gcc3_4
 # needed by the asterisk pbx software
-%patch23 -p1 -b .asterisk
-%patch24 -p1 -b .findlib
-%patch25 -p1 -b .gcc4.1.2
+#%patch23 -p1 -b .asterisk
+#%patch24 -p1 -b .findlib
+#%patch25 -p1 -b .gcc4.1.2
 
 # zero length
 rm festdoc-1.4.2/speech_tools/doc/index_html.jade
@@ -135,5 +135,3 @@ rm -rf %{buildroot}
 %{_libdir}/*.a
 %dir %{_includedir}/festival
 %{_includedir}/festival/*
-
-
