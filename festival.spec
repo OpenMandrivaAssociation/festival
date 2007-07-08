@@ -4,7 +4,7 @@ Version: 	1.96
 Release: 	%mkrel 1
 License: 	BSD
 Group: 		Sound
-URL: 		http://www.cstr.ed.ac.uk/projects/festival/
+URL:		http://www.festvox.org/festival/index.html
 Source: 	%{name}-%{version}-beta.tar.bz2
 Source2: 	festdoc-1.4.2.tar.bz2
 Source3: 	speech_tools-config
