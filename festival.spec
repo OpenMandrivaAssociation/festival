@@ -27,6 +27,7 @@ Patch23:	festival-1.4.3-asterisk.diff
 Patch24:	festival-1.95-findlibs.patch
 # http://qa.mandriva.com/show_bug.cgi?id=27646
 Patch25:	festival-fix-gcc4.1.2.patch
+Patch26:	festival-finnish.patch
 BuildRequires:	perl
 BuildRequires:	libtermcap-devel
 BuildRequires:	speech_tools-devel
@@ -70,6 +71,7 @@ applications using festival.
 #%patch23 -p1 -b .asterisk
 #%patch24 -p1 -b .findlib
 #%patch25 -p1 -b .gcc4.1.2
+%patch26 -p1
 
 # zero length
 rm festdoc-1.4.2/speech_tools/doc/index_html.jade
