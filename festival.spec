@@ -47,6 +47,8 @@ for general control.
 Summary:	Static libraries and headers for festival text to speech
 Group:		Development/C++
 Requires:	%{name} = %{version}-%{release}
+Requires:	termcap-devel
+Requires:	speech_tools-devel
 
 %description	devel
 Festival is a general multi-lingual speech synthesis system developed
