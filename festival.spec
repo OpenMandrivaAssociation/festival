@@ -32,7 +32,6 @@ BuildRequires:	perl
 BuildRequires:	libtermcap-devel
 BuildRequires:	speech_tools-devel
 Requires:	festival-voice
-BuildRoot: 	%{_tmppath}/%{name}-%{version}-root 
 
 # Somebody please teach the source code what C++ looks like this millenium
 
