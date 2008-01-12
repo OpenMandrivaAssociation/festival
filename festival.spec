@@ -1,7 +1,7 @@
 Summary: 	A free speech synthesizer 
 Name:  		festival
 Version: 	1.96
-Release: 	%mkrel 1
+Release: 	%mkrel 2
 License: 	BSD
 Group: 		Sound
 URL:		http://www.festvox.org/festival/index.html
