@@ -1,10 +1,10 @@
 Summary: 	A free speech synthesizer 
 Name:  		festival
 Version: 	1.96
-Release: 	%mkrel 2
+Release: 	%mkrel 3
 License: 	BSD
 Group: 		Sound
-URL:		http://www.festvox.org/festival/index.html
+URL:		http://www.cstr.ed.ac.uk/projects/festival/
 Source: 	%{name}-%{version}-beta.tar.bz2
 Source2: 	festdoc-1.4.2.tar.bz2
 Source3: 	speech_tools-config
