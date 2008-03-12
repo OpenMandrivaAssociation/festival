@@ -60,6 +60,7 @@ Patch16: festival-1.96-etcsiteinit.patch
 
 BuildRequires:	perl
 BuildRequires:	ncurses-devel
+BuildRequires:  esound-devel
 Requires:	festival-voice
 BuildRoot: 	%{_tmppath}/%{name}-%{festivalversion}-root 
 
