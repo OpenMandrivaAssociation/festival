@@ -10,7 +10,7 @@
 Summary: 	A free speech synthesizer 
 Name:  		festival
 Version: 	%{festivalversion}
-Release: 	%mkrel 6
+Release: 	%mkrel 7
 License: 	BSD
 Group: 		Sound
 URL:		http://www.cstr.ed.ac.uk/projects/festival/
@@ -118,11 +118,11 @@ applications that use festival.
 Summary:  	Static libraries and headers for festival text to speech
 Group: 		Development/C++
 Version: %{speechtoolsversion}
-Requires: 	%{name} = %{speechtoolsversion}-%{release}
+Requires: 	speech_tools = %{speechtoolsversion}-%{release}
 Requires: 	%{libname} = %{speechtoolsversion}-%{release}
-Provides:	%{name}-devel = %{speechtoolsversion}-%{release}
-Obsoletes:	%mklibname -d %name %major
-Obsoletes:	%mklibname -d -s %name
+Provides:	speech_tools-devel = %{speechtoolsversion}-%{release}
+Obsoletes:	%mklibname -d speech_tools %major
+Obsoletes:	%mklibname -d -s speech_tools
 
 %description -n	%{libnamedevel}
 Festival is a general multi-lingual speech synthesis system developed
