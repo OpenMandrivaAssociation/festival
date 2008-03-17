@@ -10,7 +10,7 @@
 Summary: 	A free speech synthesizer 
 Name:  		festival
 Version: 	%{festivalversion}
-Release: 	%mkrel 7
+Release: 	%mkrel 8
 License: 	BSD
 Group: 		Sound
 URL:		http://www.cstr.ed.ac.uk/projects/festival/
@@ -76,6 +76,7 @@ for general control.
 Summary: Miscellaneous utilities from the Edinburgh Speech Tools 
 Group: Sound
 Version: %{speechtoolsversion}
+Conflicts: festival < 1.96-6mdv
 
 %description -n speech_tools
 Miscellaneous utilities from the Edinburgh Speech Tools. Unless you have a
