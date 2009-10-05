@@ -56,7 +56,7 @@ Patch15:	festival-finnish.patch
 # Look for siteinit and sitevars in /etc/festival
 Patch16: festival-1.96-etcsiteinit.patch
 Patch17:	speech_tools-1.2.96-fix-str-fmt.patch
-
+Patch18:	festival-1.96-gcc44.patch
 
 BuildRequires:	perl
 BuildRequires:	ncurses-devel
@@ -163,6 +163,7 @@ applications using festival.
 # no backup extension, directory is copied during package install
 %patch16 -p1 
 %patch17 -p0
+%patch18 -p1
 
 
 
