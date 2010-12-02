@@ -10,7 +10,7 @@
 Summary: 	A free speech synthesizer 
 Name:  		festival
 Version: 	%{festivalversion}
-Release: 	%mkrel 12
+Release: 	%mkrel 13
 License: 	BSD
 Group: 		Sound
 URL:		http://www.cstr.ed.ac.uk/projects/festival/
