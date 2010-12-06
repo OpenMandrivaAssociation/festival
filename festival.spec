@@ -1,21 +1,23 @@
-%define festivalversion 1.96
 # we ship the 1.4.2 docs for now.
 %define docversion 1.4.2
-%define speechtoolsversion 1.2.96
+%define speechtoolsversion %version
 
-%define major 1
+%define major 2.1.1
 %define libname %mklibname speech_tools %major
+%define stringmajor 1.2
+%define libnamestring %mklibname eststring %stringmajor
+%define oldlibname %mklibname speech_tools 1
 %define libnamedevel %mklibname speech_tools -d
 
 Summary: 	A free speech synthesizer 
 Name:  		festival
-Version: 	%{festivalversion}
-Release: 	%mkrel 13
+Version: 	2.1
+Release: 	%mkrel 1
 License: 	BSD
 Group: 		Sound
 URL:		http://www.cstr.ed.ac.uk/projects/festival/
-Source: 	http://festvox.org/packed/festival/%{festivalversion}/%{name}-%{version}-beta.tar.bz2
-Source1:	http://festvox.org/packed/festival/%{festivalversion}/speech_tools-%{speechtoolsversion}-beta.tar.bz2
+Source: 	http://festvox.org/packed/festival/%{version}/%{name}-%{version}-release.tar.gz
+Source1:	http://festvox.org/packed/festival/%{version}/speech_tools-%{speechtoolsversion}-release.tar.gz
 Source2: 	http://festvox.org/packed/festival/%{docversion}/festdoc-%{docversion}.tar.bz2
 Source3:	siteinit.scm
 Source4:	sitevars.scm
@@ -24,7 +26,7 @@ Patch0:		festival-1.4.1-fsstnd.patch
 # Set defaults to American English instead of British English - the OALD
 # dictionary (free for non-commercial use only) is needed for BE support
 # Additionally, prefer the smaller nitech hts voices.
-Patch1:		festival-1.96-nitech-american.patch
+Patch1:		festival-2.1-nitech-american.patch
 # Whack some buildroot references
 Patch2: festival_buildroot.patch
 
@@ -39,30 +41,22 @@ Patch6:		festival-1.96-speechtools-linklibswithotherlibs.patch
 Patch7:		festival-1.96-speechtools-ohjeezcxxisnotgcc.patch
 # (fc) 1.2.96-5mdv build speech_tools as shared libraries (Fedora)
 Patch8:		festival-1.96-speechtools-shared-build.patch
-# (fc) 1.2.96-5mdv fix build with gcc on amd64 and ensure all tests passed
-Patch9:		speech_tools-1.2.96-gcc41-amd64-int-pointer.patch
 # (fc) 1.2.96-5mdv Look for speech tools here, not back there (Fedora)
 Patch10: 	festival-1.96-findspeechtools.patch
 # (fc) 1.96-5mdv  Build main library as shared, not just speech-tools (Fedora)
 Patch11:	festival-1.96-main-shared-build.patch
 # (fc) 1.2.96-5mdv improve soname (Fedora)
-Patch12:	festival-1.96-bettersonamehack.patch
-# (fc) 1.96-5mdv fix build with gcc 4.3 (Fedora)
-Patch13:	festival-1.96-gcc43.patch
-# remove invalid gcc option 
-Patch14: festival-1.96-speech_tools-remove-invalid-gcc-option.patch
+Patch12:	festival-2.1-bettersonamehack.patch
 # (fc) 
 Patch15:	festival-finnish.patch
 # Look for siteinit and sitevars in /etc/festival
 Patch16: festival-1.96-etcsiteinit.patch
 Patch17:	speech_tools-1.2.96-fix-str-fmt.patch
-Patch18:	festival-1.96-gcc44.patch
-
 BuildRequires:	perl
 BuildRequires:	ncurses-devel
 BuildRequires:  esound-devel
 Requires:	festival-voice
-BuildRoot: 	%{_tmppath}/%{name}-%{festivalversion}-root 
+BuildRoot: 	%{_tmppath}/%{name}-%{version}-root 
 
 %description
 Festival is a general multi-lingual speech synthesis system developed
@@ -86,7 +80,7 @@ this.
 %package	devel
 Summary:	Static libraries and headers for festival text to speech
 Group:		Development/C++
-Requires:	%{name} = %{festivalversion}-%{release}
+Requires:	%{name} = %{version}-%{release}
 Requires:	termcap-devel
 Requires:	speech_tools-devel
 
@@ -99,13 +93,31 @@ for general control.
 
 This package contains the libraries and includes files necessary to develop
 applications using festival.
+
 %package -n	%{libname}
-Summary:  	Static libraries and headers for festival text to speech
+Summary:  	Shared libraries for festival text to speech
 Group: 		System/Libraries
 Version: %{speechtoolsversion}
 Requires: 	speech_tools = %{speechtoolsversion}-%{release}
 
 %description -n	%{libname}
+Festival is a general multi-lingual speech synthesis system developed
+at CSTR. It offers a full text to speech system with various APIs, as
+well as an environment for development and research of speech synthesis
+techniques. It is written in C++ with a Scheme-based command interpreter
+for general control.
+
+This package contains the libraries and includes files necessary for
+applications that use festival.
+
+%package -n	%{libnamestring}
+Summary:  	Shared libraries for festival text to speech
+Group: 		System/Libraries
+Version: %{speechtoolsversion}
+Requires: 	speech_tools = %{speechtoolsversion}-%{release}
+Conflicts:	%oldlibname < %version
+
+%description -n	%{libnamestring}
 Festival is a general multi-lingual speech synthesis system developed
 at CSTR. It offers a full text to speech system with various APIs, as
 well as an environment for development and research of speech synthesis
@@ -121,6 +133,7 @@ Group: 		Development/C++
 Version: %{speechtoolsversion}
 Requires: 	speech_tools = %{speechtoolsversion}-%{release}
 Requires: 	%{libname} = %{speechtoolsversion}-%{release}
+Requires: 	%{libnamestring} = %{speechtoolsversion}-%{release}
 Provides:	speech_tools-devel = %{speechtoolsversion}-%{release}
 Obsoletes:	%mklibname -d speech_tools %major
 Obsoletes:	%mklibname -d -s speech_tools
@@ -150,22 +163,16 @@ applications using festival.
 %patch6 -p1 -b .linklibswithotherlibs
 %patch7 -p1 -b .cxx
 %patch8 -p1 -b .shared
-%patch9 -p1 -b .gcc41-amd64-int-pointer
 # no backup extension, directory is copied during package install
 %patch10 -p1 
 # no backup extension, directory is copied during package install
 %patch11 -p1 
 %patch12 -p1 -b .bettersoname
-%patch13 -p1 -b .gcc43
-%patch14 -p1 -b .remove-invalid-gcc-option
 # no backup extension, directory is copied during package install
 %patch15 -p1 
 # no backup extension, directory is copied during package install
 %patch16 -p1 
 %patch17 -p0
-%patch18 -p1
-
-
 
 # zero length
 rm festdoc-1.4.2/speech_tools/doc/index_html.jade
@@ -320,7 +327,7 @@ rm -rf %{buildroot}
 %{_bindir}/festival_server_control
 %{_bindir}/text2wave
 %{_bindir}/saytime
-%{_libdir}/libFestival.so.%{festivalversion}*
+%{_libdir}/libFestival.so.%{version}*
 %dir %{_datadir}/festival
 %dir %{_datadir}/festival/lib
 %{_datadir}/festival/lib/*.scm
@@ -368,7 +375,10 @@ rm -rf %{buildroot}
 %doc speech_tools/README
 %{_libdir}/libestbase.so.%{major}*
 %{_libdir}/libestools.so.%{major}*
-%{_libdir}/libeststring.so.%{major}*
+
+%files -n %libnamestring
+%defattr(-,root,root)
+%{_libdir}/libeststring.so.%{stringmajor}*
 
 %files -n %{libnamedevel}
 %defattr(-,root,root)
