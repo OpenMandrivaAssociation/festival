@@ -222,14 +222,14 @@ rm -rf %{buildroot}
 # install speech tools libs, binaries, and include files
 pushd speech_tools
 
-  make INSTALLED_LIB=$RPM_BUILD_ROOT%{_libdir} make_installed_lib_shared
+  make INSTALLED_LIB=%{buildroot}%{_libdir} make_installed_lib_shared
   # no thanks, static libs.
-  rm -f $RPM_BUILD_ROOT%{_libdir}/*.a
+  rm -f %{buildroot}%{_libdir}/*.a
 
-  make INSTALLED_BIN=$RPM_BUILD_ROOT%{_bindir} make_installed_bin_static
+  make INSTALLED_BIN=%{buildroot}%{_bindir} make_installed_bin_static
   # this list of the useful programs in speech_tools comes from
   # upstream developer Alan W. Black; the other stuff is to be removed.
-  pushd $RPM_BUILD_ROOT%{_bindir}
+  pushd %{buildroot}%{_bindir}
     ls |
         grep -Evw "ch_wave|ch_track|na_play|na_record|wagon|wagon_test" |
         grep -Evw "make_wagon_desc|pitchmark|pm|sig2fv|wfst_build" |
@@ -239,7 +239,7 @@ pushd speech_tools
 
   pushd include
     for d in $( find . -type d | grep -v win32 ); do
-      make -w -C $d INCDIR=$RPM_BUILD_ROOT%{_includedir}/EST/$d install_incs
+      make -w -C $d INCDIR=%{buildroot}%{_includedir}/EST/$d install_incs
     done  
   popd
 
@@ -249,18 +249,18 @@ popd
 install -d %{buildroot}%{_datadir}/%{name}/{voices/english,dicts}
 
 # bin
-make INSTALLED_BIN=$RPM_BUILD_ROOT%{_bindir} make_installed_bin_static
-install -m 755 bin/text2wave $RPM_BUILD_ROOT%{_bindir}
+make INSTALLED_BIN=%{buildroot}%{_bindir} make_installed_bin_static
+install -m 755 bin/text2wave %{buildroot}%{_bindir}
 #install bin/festival_server* bin/text2wave %{buildroot}%{_bindir}
 #install src/main/festival{,_client} %{buildroot}%{_bindir}
 # this is just nifty. and it's small.
-install -m 755 examples/saytime $RPM_BUILD_ROOT%{_bindir}
+install -m 755 examples/saytime %{buildroot}%{_bindir}
 
 # install the shared library
-cp -a src/lib/libFestival.so* $RPM_BUILD_ROOT%{_libdir}
+cp -a src/lib/libFestival.so* %{buildroot}%{_libdir}
 
 # devel
-mkdir -p $RPM_BUILD_ROOT%{_includedir}/festival
+mkdir -p %{buildroot}%{_includedir}/festival
 install src/include/*.h %{buildroot}%{_includedir}/%{name}
 
 # data
@@ -268,17 +268,17 @@ cp -r lib config examples %{buildroot}%{_datadir}/%{name}
 find %{buildroot}%{_datadir}/%{name} -name Makefile -exec rm \{\} \;
 
 # man pages
-mkdir -p $RPM_BUILD_ROOT%{_mandir}/man1
-cp -a doc/*.1 $RPM_BUILD_ROOT%{_mandir}/man1
+mkdir -p %{buildroot}%{_mandir}/man1
+cp -a doc/*.1 %{buildroot}%{_mandir}/man1
 
 # lib: the bulk of the program -- the scheme stuff and so on
 pushd lib
-  mkdir -p $RPM_BUILD_ROOT%{_datadir}/festival/lib
+  mkdir -p %{buildroot}%{_datadir}/festival/lib
   for f in *.scm festival.el *.ent *.gram *.dtd *.ngrambin speech.properties ; do
-    install -m 644 $f $RPM_BUILD_ROOT%{_datadir}/festival/lib/
+    install -m 644 $f %{buildroot}%{_datadir}/festival/lib/
   done
-  mkdir -p $RPM_BUILD_ROOT%{_datadir}/festival/lib/multisyn/
-  install -m 644 multisyn/*.scm $RPM_BUILD_ROOT%{_datadir}/festival/lib/multisyn/
+  mkdir -p %{buildroot}%{_datadir}/festival/lib/multisyn/
+  install -m 644 multisyn/*.scm %{buildroot}%{_datadir}/festival/lib/multisyn/
 popd 
 
 mv -f %{buildroot}/%{_datadir}/%{name}/lib/etc/unknown_RedHatLinux/audsp %{buildroot}/%{_bindir}
@@ -287,11 +287,11 @@ rm -f %{buildroot}%{_datadir}/%{name}/lib/VCLocalRules
 
 
 # the actual /etc. :)
-mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/festival
+mkdir -p %{buildroot}%{_sysconfdir}/festival
 # use our version of this file
-rm $RPM_BUILD_ROOT%{_datadir}/festival/lib/siteinit.scm 
-install -m 644 %{SOURCE3} $RPM_BUILD_ROOT%{_sysconfdir}/festival/siteinit.scm
-install -m 644 %{SOURCE4} $RPM_BUILD_ROOT%{_sysconfdir}/festival/sitevars.scm
+rm %{buildroot}%{_datadir}/festival/lib/siteinit.scm 
+install -m 644 %{SOURCE3} %{buildroot}%{_sysconfdir}/festival/siteinit.scm
+install -m 644 %{SOURCE4} %{buildroot}%{_sysconfdir}/festival/sitevars.scm
 
 sed -i -e 's,/projects/festival/lib,%{_datadir}/%{name},g' %{buildroot}/%{_datadir}/%{name}/lib/lexicons.scm
 
