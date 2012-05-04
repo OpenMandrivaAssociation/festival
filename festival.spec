@@ -341,8 +341,6 @@ rm -rf %{buildroot}
 %{_datadir}/festival/voices
 %dir %{_datadir}/festival/lib/multisyn
 %{_datadir}/festival/lib/multisyn/*.scm
-%dir %{_datadir}/festival/examples
-%{_datadir}/festival/examples/intro.text
 %{_mandir}/man1/*
 %config(noreplace) %{_sysconfdir}/festival
 
