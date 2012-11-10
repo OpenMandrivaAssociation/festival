@@ -1,0 +1,43 @@
+Index: festival/src/main/festival_main.cc
+===================================================================
+--- festival/src/main/festival_main.cc
++++ festival/src/main/festival_main.cc	2007-08-07 03:36:20.000000000 +0300
+@@ -103,7 +103,7 @@
+ 	"              are printed (default if stdin not a tty)\n"+
+ 	"--language <string>\n"+
+         "              Run in named language, default is\n"+
+-	"              english, spanish and welsh are available\n"+
++	"              english; spanish, welsh and finnish are available\n"+
+ 	"--server      Run in server mode waiting for clients\n"+
+ 	"              of server_port (1314)\n"+
+ 	"--script <ifile>\n"+
+Index: festival/lib/languages.scm
+===================================================================
+--- festival/lib/languages.scm
++++ festival/lib/languages.scm	2007-08-07 03:38:01.000000000 +0300
+@@ -95,6 +95,16 @@
+ 
+   (Parameter.set 'Language 'spanish)
+ )
++(define (language_finnish)
++"(language_finnish)
++Set up language parameters for Finnish."
++  (if (symbol-bound? 'voice_suo_fi_lj_diphone)
++      (set! female1 (lambda () (voice_suo_fi_lj_diphone))))
++  (set! male1 (lambda () (voice_hy_fi_mv_diphone)))
++
++  (male1)
++  (Parameter.set 'Language 'finnish)
++)
+ 
+ (define (select_language language)
+   (cond
+@@ -109,6 +119,8 @@
+     (language_welsh))
+    ((equal? language 'spanish)
+     (language_castillian_spanish))
++   ((equal? language 'finnish)
++    (language_finnish))
+    ((equal? language 'klingon)
+     (language_klingon))
+    (t
