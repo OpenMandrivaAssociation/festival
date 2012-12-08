@@ -6,7 +6,7 @@ diff -p -up festival/speech_tools/config/compilers/gcc_defaults.mak.bettersoname
  
  ifndef GCC_MAKE_SHARED_LIB
 -    MAKE_SHARED_LIB = $(CXX) -shared -fno-shared-data -o XXX
-+    MAKE_SHARED_LIB = $(CXX) -shared -fno-shared-data -o XXX -Wl,-soname,YYY
++    MAKE_SHARED_LIB = $(CXX) -shared -o XXX -Wl,-soname,YYY
  else
      MAKE_SHARED_LIB = $(GCC_MAKE_SHARED_LIB)
  endif

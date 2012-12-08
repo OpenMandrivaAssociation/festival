@@ -9,16 +9,16 @@
 %define oldlibname %mklibname speech_tools 1
 %define libnamedevel %mklibname speech_tools -d
 
-Summary: 	A free speech synthesizer 
-Name:  		festival
-Version: 	2.1
-Release: 	%mkrel 3
-License: 	BSD
-Group: 		Sound
+Summary:	A free speech synthesizer 
+Name:		festival
+Version:	2.1
+Release:	%mkrel 3
+License:	BSD
+Group:		Sound
 URL:		http://www.cstr.ed.ac.uk/projects/festival/
-Source: 	http://festvox.org/packed/festival/%{version}/%{name}-%{version}-release.tar.gz
+Source0:	http://festvox.org/packed/festival/%{version}/%{name}-%{version}-release.tar.gz
 Source1:	http://festvox.org/packed/festival/%{version}/speech_tools-%{speechtoolsversion}-release.tar.gz
-Source2: 	http://festvox.org/packed/festival/%{docversion}/festdoc-%{docversion}.tar.bz2
+Source2:	http://festvox.org/packed/festival/%{docversion}/festdoc-%{docversion}.tar.bz2
 Source3:	siteinit.scm
 Source4:	sitevars.scm
 # Fix up various locations to be more FSSTND compliant
@@ -29,20 +29,21 @@ Patch0:		festival-1.4.1-fsstnd.patch
 Patch1:		festival-2.1-nitech-american.patch
 # Whack some buildroot references
 Patch2: festival_buildroot.patch
+Patch3: festival.gcc47.patch
 
-# Build the ESD module
-Patch4: festival-1.96-speechtools-buildesdmodule.patch
 # (fc) 1.2.96-4mdv Fix a coding error (RH bug #162137) (Fedora)
 Patch5: festival-1.96-speechtools-rateconvtrivialbug.patch
 # (fc) 1.2.96-4mdv Link libs with libm, libtermcap, and libesd (RH bug #198190) (Fedora)
-Patch6:		festival-1.96-speechtools-linklibswithotherlibs.patch
+# (ahmad) 2.1-2.mga1 modify this patch so that we don't link against libesd,
+# as esound is being phased out of the distro
+Patch6:		festival-2.1-speechtools-linklibswithotherlibs.patch
 # For some reason, CXX is set to gcc on everything but Mac OS Darwin,
 # where it's set to g++. Yeah, well. We need it to be right too.
 Patch7:		festival-1.96-speechtools-ohjeezcxxisnotgcc.patch
 # (fc) 1.2.96-5mdv build speech_tools as shared libraries (Fedora)
 Patch8:		festival-1.96-speechtools-shared-build.patch
 # (fc) 1.2.96-5mdv Look for speech tools here, not back there (Fedora)
-Patch10: 	festival-1.96-findspeechtools.patch
+Patch10:	festival-1.96-findspeechtools.patch
 # (fc) 1.96-5mdv  Build main library as shared, not just speech-tools (Fedora)
 Patch11:	festival-1.96-main-shared-build.patch
 # (fc) 1.2.96-5mdv improve soname (Fedora)
@@ -53,10 +54,8 @@ Patch15:	festival-finnish.patch
 Patch16: festival-1.96-etcsiteinit.patch
 Patch17:	speech_tools-1.2.96-fix-str-fmt.patch
 BuildRequires:	perl
-BuildRequires:	ncurses-devel
-BuildRequires:  esound-devel
+BuildRequires:	pkgconfig(ncurses)
 Requires:	festival-voice
-BuildRoot: 	%{_tmppath}/%{name}-%{version}-root 
 
 %description
 Festival is a general multi-lingual speech synthesis system developed
@@ -69,7 +68,7 @@ for general control.
 %package -n speech_tools
 Summary: Miscellaneous utilities from the Edinburgh Speech Tools 
 Group: Sound
-Version: %{speechtoolsversion}
+Version:	%{speechtoolsversion}
 Conflicts: festival < 1.96-9mdv
 
 %description -n speech_tools
@@ -95,10 +94,11 @@ This package contains the libraries and includes files necessary to develop
 applications using festival.
 
 %package -n	%{libname}
-Summary:  	Shared libraries for festival text to speech
-Group: 		System/Libraries
-Version: %{speechtoolsversion}
-Requires: 	speech_tools = %{speechtoolsversion}-%{release}
+Summary:	Shared libraries for festival text to speech
+Group:		System/Libraries
+Version:	%{speechtoolsversion}
+Requires:	speech_tools >= %{speechtoolsversion}-%{release}
+Conflicts:	%oldlibname < %version
 
 %description -n	%{libname}
 Festival is a general multi-lingual speech synthesis system developed
@@ -111,10 +111,10 @@ This package contains the libraries and includes files necessary for
 applications that use festival.
 
 %package -n	%{libnamestring}
-Summary:  	Shared libraries for festival text to speech
-Group: 		System/Libraries
-Version: %{speechtoolsversion}
-Requires: 	speech_tools = %{speechtoolsversion}-%{release}
+Summary:	Shared libraries for festival text to speech
+Group:		System/Libraries
+Version:	%{speechtoolsversion}
+Requires:	speech_tools >= %{speechtoolsversion}-%{release}
 Conflicts:	%oldlibname < %version
 
 %description -n	%{libnamestring}
@@ -128,12 +128,12 @@ This package contains the libraries and includes files necessary for
 applications that use festival.
 
 %package -n	%{libnamedevel}
-Summary:  	Static libraries and headers for festival text to speech
-Group: 		Development/C++
-Version: %{speechtoolsversion}
-Requires: 	speech_tools = %{speechtoolsversion}-%{release}
-Requires: 	%{libname} = %{speechtoolsversion}-%{release}
-Requires: 	%{libnamestring} = %{speechtoolsversion}-%{release}
+Summary:	Static libraries and headers for festival text to speech
+Group:		Development/C++
+Version:	%{speechtoolsversion}
+Requires:	speech_tools = %{speechtoolsversion}-%{release}
+Requires:	%{libname} = %{speechtoolsversion}-%{release}
+Requires:	%{libnamestring} = %{speechtoolsversion}-%{release}
 Provides:	speech_tools-devel = %{speechtoolsversion}-%{release}
 Obsoletes:	%mklibname -d speech_tools %major
 Obsoletes:	%mklibname -d -s speech_tools
@@ -148,17 +148,13 @@ for general control.
 This package contains the libraries and includes files necessary to develop
 applications using festival.
  
-
- 
 %prep
-
 %setup -q -n festival -a 1 -a 2  
 %patch0 -p1 -b .fsstnd
 # no backup extension, directory is copied during package install
 %patch1 -p1 
 %patch2 -p1 -b .buildroot
-# no backup extension, directory is copied during package install
-%patch4 -p1 
+%patch3 -p0 -b .gcc
 %patch5 -p1 -b .rateconvtrivialbug
 %patch6 -p1 -b .linklibswithotherlibs
 %patch7 -p1 -b .cxx
@@ -188,7 +184,7 @@ perl -pi -e '/^REQUIRED_LIBRARY_DIR/ and s,/usr/lib,%{_libdir},' config/project.
 # build speech tools (and libraries)
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)/speech_tools/lib
 cd speech_tools
-  %configure
+  %configure2_5x
   # -fPIC 'cause we're building shared libraries and it doesn't hurt
   # -fno-strict-aliasing because of a couple of warnings about code
   #   problems; if $RPM_OPT_FLAGS contains -O2 or above, this puts
@@ -217,19 +213,17 @@ cd speech_tools
 cd ..
 
 %install
-rm -rf %{buildroot}
-
 # install speech tools libs, binaries, and include files
 pushd speech_tools
 
-  make INSTALLED_LIB=%{buildroot}%{_libdir} make_installed_lib_shared
+  make INSTALLED_LIB=$RPM_BUILD_ROOT%{_libdir} make_installed_lib_shared
   # no thanks, static libs.
-  rm -f %{buildroot}%{_libdir}/*.a
+  rm -f $RPM_BUILD_ROOT%{_libdir}/*.a
 
-  make INSTALLED_BIN=%{buildroot}%{_bindir} make_installed_bin_static
+  make INSTALLED_BIN=$RPM_BUILD_ROOT%{_bindir} make_installed_bin_static
   # this list of the useful programs in speech_tools comes from
   # upstream developer Alan W. Black; the other stuff is to be removed.
-  pushd %{buildroot}%{_bindir}
+  pushd $RPM_BUILD_ROOT%{_bindir}
     ls |
         grep -Evw "ch_wave|ch_track|na_play|na_record|wagon|wagon_test" |
         grep -Evw "make_wagon_desc|pitchmark|pm|sig2fv|wfst_build" |
@@ -239,7 +233,7 @@ pushd speech_tools
 
   pushd include
     for d in $( find . -type d | grep -v win32 ); do
-      make -w -C $d INCDIR=%{buildroot}%{_includedir}/EST/$d install_incs
+      make -w -C $d INCDIR=$RPM_BUILD_ROOT%{_includedir}/EST/$d install_incs
     done  
   popd
 
@@ -249,18 +243,18 @@ popd
 install -d %{buildroot}%{_datadir}/%{name}/{voices/english,dicts}
 
 # bin
-make INSTALLED_BIN=%{buildroot}%{_bindir} make_installed_bin_static
-install -m 755 bin/text2wave %{buildroot}%{_bindir}
+make INSTALLED_BIN=$RPM_BUILD_ROOT%{_bindir} make_installed_bin_static
+install -m 755 bin/text2wave $RPM_BUILD_ROOT%{_bindir}
 #install bin/festival_server* bin/text2wave %{buildroot}%{_bindir}
 #install src/main/festival{,_client} %{buildroot}%{_bindir}
 # this is just nifty. and it's small.
-install -m 755 examples/saytime %{buildroot}%{_bindir}
+install -m 755 examples/saytime $RPM_BUILD_ROOT%{_bindir}
 
 # install the shared library
-cp -a src/lib/libFestival.so* %{buildroot}%{_libdir}
+cp -a src/lib/libFestival.so* $RPM_BUILD_ROOT%{_libdir}
 
 # devel
-mkdir -p %{buildroot}%{_includedir}/festival
+mkdir -p $RPM_BUILD_ROOT%{_includedir}/festival
 install src/include/*.h %{buildroot}%{_includedir}/%{name}
 
 # data
@@ -268,17 +262,17 @@ cp -r lib config examples %{buildroot}%{_datadir}/%{name}
 find %{buildroot}%{_datadir}/%{name} -name Makefile -exec rm \{\} \;
 
 # man pages
-mkdir -p %{buildroot}%{_mandir}/man1
-cp -a doc/*.1 %{buildroot}%{_mandir}/man1
+mkdir -p $RPM_BUILD_ROOT%{_mandir}/man1
+cp -a doc/*.1 $RPM_BUILD_ROOT%{_mandir}/man1
 
 # lib: the bulk of the program -- the scheme stuff and so on
 pushd lib
-  mkdir -p %{buildroot}%{_datadir}/festival/lib
+  mkdir -p $RPM_BUILD_ROOT%{_datadir}/festival/lib
   for f in *.scm festival.el *.ent *.gram *.dtd *.ngrambin speech.properties ; do
-    install -m 644 $f %{buildroot}%{_datadir}/festival/lib/
+    install -m 644 $f $RPM_BUILD_ROOT%{_datadir}/festival/lib/
   done
-  mkdir -p %{buildroot}%{_datadir}/festival/lib/multisyn/
-  install -m 644 multisyn/*.scm %{buildroot}%{_datadir}/festival/lib/multisyn/
+  mkdir -p $RPM_BUILD_ROOT%{_datadir}/festival/lib/multisyn/
+  install -m 644 multisyn/*.scm $RPM_BUILD_ROOT%{_datadir}/festival/lib/multisyn/
 popd 
 
 mv -f %{buildroot}/%{_datadir}/%{name}/lib/etc/unknown_RedHatLinux/audsp %{buildroot}/%{_bindir}
@@ -287,35 +281,15 @@ rm -f %{buildroot}%{_datadir}/%{name}/lib/VCLocalRules
 
 
 # the actual /etc. :)
-mkdir -p %{buildroot}%{_sysconfdir}/festival
+mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/festival
 # use our version of this file
-rm %{buildroot}%{_datadir}/festival/lib/siteinit.scm 
-install -m 644 %{SOURCE3} %{buildroot}%{_sysconfdir}/festival/siteinit.scm
-install -m 644 %{SOURCE4} %{buildroot}%{_sysconfdir}/festival/sitevars.scm
+rm $RPM_BUILD_ROOT%{_datadir}/festival/lib/siteinit.scm 
+install -m 644 %{SOURCE3} $RPM_BUILD_ROOT%{_sysconfdir}/festival/siteinit.scm
+install -m 644 %{SOURCE4} $RPM_BUILD_ROOT%{_sysconfdir}/festival/sitevars.scm
 
 sed -i -e 's,/projects/festival/lib,%{_datadir}/%{name},g' %{buildroot}/%{_datadir}/%{name}/lib/lexicons.scm
 
-%if %mdkversion < 200900
-%post -p /sbin/ldconfig
-%endif
-
-%if %mdkversion < 200900
-%postun -p /sbin/ldconfig
-%endif
-
-%if %mdkversion < 200900
-%post -n %{libname} -p /sbin/ldconfig
-%endif
-
-%if %mdkversion < 200900
-%postun -n %{libname} -p /sbin/ldconfig
-%endif
-
-%clean
-rm -rf %{buildroot}
-
 %files
-%defattr(-,root,root)
 %doc ACKNOWLEDGMENTS COPYING INSTALL NEWS README*
 %doc festdoc-1.4.2/festival/html/*html
 %doc festdoc-1.4.2/festival/info
@@ -341,18 +315,18 @@ rm -rf %{buildroot}
 %{_datadir}/festival/voices
 %dir %{_datadir}/festival/lib/multisyn
 %{_datadir}/festival/lib/multisyn/*.scm
+%dir %{_datadir}/festival/examples
+#% {_datadir}/festival/examples/intro.text
 %{_mandir}/man1/*
 %config(noreplace) %{_sysconfdir}/festival
 
 %files devel
-%defattr(-,root,root)
 %doc festdoc-1.4.2/speech_tools
 %{_libdir}/libFestival.so
 %{_includedir}/festival
 %{_datadir}/festival/config
 
 %files -n speech_tools
-%defattr(-,root,root)
 %doc speech_tools/INSTALL speech_tools/README
 %{_bindir}/ch_track
 %{_bindir}/ch_wave
@@ -369,17 +343,14 @@ rm -rf %{buildroot}
 %{_datadir}/festival/examples
 
 %files -n %{libname}
-%defattr(-,root,root)
 %doc speech_tools/README
 %{_libdir}/libestbase.so.%{major}*
 %{_libdir}/libestools.so.%{major}*
 
 %files -n %libnamestring
-%defattr(-,root,root)
 %{_libdir}/libeststring.so.%{stringmajor}*
 
 %files -n %{libnamedevel}
-%defattr(-,root,root)
 %{_includedir}/EST
 %{_libdir}/libestbase.so
 %{_libdir}/libestools.so

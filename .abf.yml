@@ -1,6 +1,5 @@
+---
 sources:
-  "festdoc-1.4.2.tar.bz2:"	dc9c78a1fda02619728b594c8c19940720806a15
-  "festival-2.1-release.tar.gz:"	f0c5a4282667898c584516e3605742835f59cb77
-  "siteinit.scm:"	7371a2038cec7c8625a3d361bc4ab2c84bd3b0c9
-  "sitevars.scm:"	c8f27351127c89c42a1d860b3043cf1d5e584c5c
-  "speech_tools-2.1-release.tar.gz:"	bbf43b259de8bb91e0c5e8a1defc6e45a10e60f9
+  festdoc-1.4.2.tar.bz2: dc9c78a1fda02619728b594c8c19940720806a15
+  festival-2.1-release.tar.gz: f0c5a4282667898c584516e3605742835f59cb77
+  speech_tools-2.1-release.tar.gz: bbf43b259de8bb91e0c5e8a1defc6e45a10e60f9
