@@ -1,6 +1,6 @@
-diff -p -up festival/speech_tools/config/compilers/gcc_defaults.mak.bettersoname festival/speech_tools/config/compilers/gcc_defaults.mak
---- festival/speech_tools/config/compilers/gcc_defaults.mak.bettersoname	2010-12-06 10:25:35.000000000 +0100
-+++ festival/speech_tools/config/compilers/gcc_defaults.mak	2010-12-06 10:27:51.000000000 +0100
+diff -p -up speech_tools/config/compilers/gcc_defaults.mak.bettersoname festival/speech_tools/config/compilers/gcc_defaults.mak
+--- speech_tools/config/compilers/gcc_defaults.mak.bettersoname	2010-12-06 10:25:35.000000000 +0100
++++ speech_tools/config/compilers/gcc_defaults.mak	2010-12-06 10:27:51.000000000 +0100
 @@ -78,7 +78,7 @@ SHARED_CXXFLAGS  = -fPIC
  SHARED_LINKFLAGS = 
  
@@ -10,9 +10,9 @@ diff -p -up festival/speech_tools/config/compilers/gcc_defaults.mak.bettersoname
  else
      MAKE_SHARED_LIB = $(GCC_MAKE_SHARED_LIB)
  endif
-diff -p -up festival/speech_tools/config/rules/library.mak.bettersoname festival/speech_tools/config/rules/library.mak
---- festival/speech_tools/config/rules/library.mak.bettersoname	2001-04-04 13:55:32.000000000 +0200
-+++ festival/speech_tools/config/rules/library.mak	2010-12-06 10:25:35.000000000 +0100
+diff -p -up speech_tools/config/rules/library.mak.bettersoname festival/speech_tools/config/rules/library.mak
+--- speech_tools/config/rules/library.mak.bettersoname	2001-04-04 13:55:32.000000000 +0200
++++ speech_tools/config/rules/library.mak	2010-12-06 10:25:35.000000000 +0100
 @@ -103,14 +103,14 @@ endif
   ###########################################################################
  
