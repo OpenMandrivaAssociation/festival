@@ -13,7 +13,7 @@ License:	BSD
 Group:		Sound
 Url:		http://www.cstr.ed.ac.uk/projects/festival/
 Source0:	http://festvox.org/packed/festival/%{version}/%{name}-%{version}-release.tar.gz
-Source1:	http://festvox.org/packed/festival/%{docversion}/festdoc-%{docversion}.tar.gz
+Source1:	http://festvox.org/packed/festival/%{docversion}/festdoc-%{docversion}.tar.bz2
 Source2:	siteinit.scm
 Source3:	sitevars.scm
 # Fix up various locations to be more FSSTND compliant
