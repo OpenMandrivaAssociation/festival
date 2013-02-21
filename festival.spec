@@ -188,7 +188,7 @@ install -m 644 %{SOURCE3} %{buildroot}%{_sysconfdir}/festival/sitevars.scm
 sed -i -e 's,/projects/festival/lib,%{_datadir}/%{name},g' %{buildroot}/%{_datadir}/%{name}/lib/lexicons.scm
 
 %files
-%doc ACKNOWLEDGMENTS COPYING INSTALL NEWS README*
+%doc ACKNOWLEDGMENTS COPYING NEWS README*
 %doc festdoc-1.4.2/festival/html/*html
 %doc festdoc-1.4.2/festival/info
 %doc festdoc-1.4.2/festival/festival.ps
