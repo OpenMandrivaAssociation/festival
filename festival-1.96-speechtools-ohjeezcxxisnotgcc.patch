@@ -1,5 +1,5 @@
---- speech_tools/config/compilers/gcc_defaults.mak.orig	2007-03-13 16:28:39.000000000 -0400
-+++ speech_tools/config/compilers/gcc_defaults.mak	2007-03-13 16:28:59.000000000 -0400
+--- festival/speech_tools/config/compilers/gcc_defaults.mak.orig	2007-03-13 16:28:39.000000000 -0400
++++ festival/speech_tools/config/compilers/gcc_defaults.mak	2007-03-13 16:28:59.000000000 -0400
 @@ -39,10 +39,7 @@
   ###########################################################################
  
