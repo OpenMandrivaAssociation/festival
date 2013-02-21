@@ -1,14 +1,15 @@
-# we ship the 1.4.2 docs for now.
+# we ship the 1.4.2 docs for now
 %define docversion 1.4.2
 
-%define major	2.1
+%define major	2.1.0
 %define libname %mklibname %{name} %{major}
+%define wrong	%mklibname %{name} 2.1
 %define devname %mklibname %{name} -d
 
 Summary:	A free speech synthesizer 
 Name:		festival
 Version:	2.1
-Release:	4
+Release:	5
 License:	BSD
 Group:		Sound
 Url:		http://www.cstr.ed.ac.uk/projects/festival/
@@ -65,6 +66,7 @@ for general control.
 Summary:	Shared libraries for festival text to speech
 Group:		System/Libraries
 Conflicts:	%{name} < 2.1-4
+%rename		%{wrong}
 
 %description -n	%{libname}
 This package contains the libraries and includes files necessary for
