@@ -9,7 +9,7 @@
 Summary:	A free speech synthesizer 
 Name:		festival
 Version:	2.1
-Release:	8
+Release:	9
 License:	BSD
 Group:		Sound
 Url:		http://www.cstr.ed.ac.uk/projects/festival/
