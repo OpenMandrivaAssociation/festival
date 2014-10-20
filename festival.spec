@@ -18,6 +18,7 @@ Source1:	http://festvox.org/packed/festival/%{docversion}/festdoc-%{docversion}.
 Source2:	siteinit.scm
 Source3:	sitevars.scm
 Source4:	http://festvox.org/packed/festival/%{version}/speech_tools-%{version}-release.tar.gz
+Source100:	festival.rpmlintrc
 # Fix up various locations to be more FSSTND compliant
 Patch0:		festival-1.4.1-fsstnd.patch
 # Set defaults to American English instead of British English - the OALD
