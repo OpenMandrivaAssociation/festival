@@ -1,5 +1,6 @@
 # we ship the 1.4.2 docs for now
 %define docversion 1.4.2
+%define debug_package %{nil}
 
 %define major	2.1.0
 %define libname %mklibname %{name} %{major}
