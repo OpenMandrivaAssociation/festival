@@ -54,6 +54,7 @@ Patch16:	festival-1.96-etcsiteinit.patch
 BuildRequires:	perl
 BuildRequires:	speech_tools-devel >= 2.5
 BuildRequires:	pkgconfig(ncurses)
+BuildRequires:	gomp-devel
 Requires:	festival-voice
 
 %description
