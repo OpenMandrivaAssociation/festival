@@ -2,23 +2,23 @@
 %define docversion 1.4.2
 %define debug_package %{nil}
 
-%define major	2.1.0
+%define major	2.5.0.0
 %define libname %mklibname %{name} %{major}
 %define wrong	%mklibname %{name} 2.1
 %define devname %mklibname %{name} -d
 
 Summary:	A free speech synthesizer 
 Name:		festival
-Version:	2.1
-Release:	14
+Version:	2.5.0
+Release:	1
 License:	BSD
 Group:		Sound
 Url:		http://www.cstr.ed.ac.uk/projects/festival/
-Source0:	http://festvox.org/packed/festival/%{version}/%{name}-%{version}-release.tar.gz
+Source0:	http://festvox.org/packed/festival/%(echo %{version} |cut -d. -f1-2)/%{name}-%{version}-release.tar.gz
 Source1:	http://festvox.org/packed/festival/%{docversion}/festdoc-%{docversion}.tar.bz2
 Source2:	siteinit.scm
 Source3:	sitevars.scm
-Source4:	http://festvox.org/packed/festival/%{version}/speech_tools-%{version}-release.tar.gz
+Source4:	http://festvox.org/packed/festival/%(echo %{version} |cut -d. -f1-2)/speech_tools-%{version}-release.tar.gz
 Source100:	festival.rpmlintrc
 # Fix up various locations to be more FSSTND compliant
 Patch0:		festival-1.4.1-fsstnd.patch
@@ -29,10 +29,9 @@ Patch1:		festival-2.1-nitech-american.patch
 
 # Whack some buildroot references
 Patch2:		festival_buildroot.patch
-Patch3:		festival.gcc47.patch
 
-# (fc) 1.2.96-4mdv Fix a coding error (RH bug #162137) (Fedora)
-Patch5:		festival-1.96-speechtools-rateconvtrivialbug.patch
+Patch3:		festival-2.5.0-compile.patch
+
 # (fc) 1.2.96-4mdv Link libs with libm, libtermcap, and libesd (RH bug #198190) (Fedora)
 # (ahmad) 2.1-2.mga1 modify this patch so that we don't link against libesd,
 # as esound is being phased out of the distro
@@ -53,7 +52,7 @@ Patch15:	festival-finnish.patch
 # Look for siteinit and sitevars in /etc/festival
 Patch16:	festival-1.96-etcsiteinit.patch
 BuildRequires:	perl
-BuildRequires:	speech_tools-devel
+BuildRequires:	speech_tools-devel >= 2.5
 BuildRequires:	pkgconfig(ncurses)
 Requires:	festival-voice
 
@@ -86,24 +85,7 @@ applications using %{name}.
  
 %prep
 %setup -qn %{name} -a 1 -a 4
-%patch0 -p1 -b .fsstnd
-# no backup extension, directory is copied during package install
-%patch1 -p1 
-%patch2 -p1 -b .buildroot
-%patch3 -p0 -b .gcc
-%patch5 -p1 -b .rateconvtrivialbug
-%patch6 -p1 -b .linklibswithotherlibs
-%patch7 -p1 -b .cxx
-%patch8 -p1 -b .shared
-# no backup extension, directory is copied during package install
-%patch10 -p1 
-# no backup extension, directory is copied during package install
-%patch11 -p1 
-%patch12 -p1 -b .bettersoname
-# no backup extension, directory is copied during package install
-%patch15 -p1 
-# no backup extension, directory is copied during package install
-%patch16 -p1 
+%apply_patches
 
 # zero length
 rm festdoc-1.4.2/speech_tools/doc/index_html.jade
@@ -130,7 +112,7 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)/src/lib
 # instead of doing this, maybe we should patch the make process
 # so it looks in the right place explicitly:
 export PATH=$(pwd)/bin:$PATH
-%configure2_5x
+%configure
 make \
 	CFLAGS="$RPM_OPT_FLAGS -fPIC" \
 	CXXFLAGS="$RPM_OPT_FLAGS -fPIC" \
@@ -195,6 +177,7 @@ sed -i -e 's,/projects/festival/lib,%{_datadir}/%{name},g' %{buildroot}/%{_datad
 %doc festdoc-1.4.2/festival/info
 %doc festdoc-1.4.2/festival/festival.ps
 %{_bindir}/audsp
+%{_bindir}/default_voices
 %{_bindir}/festival
 %{_bindir}/festival_client
 %{_bindir}/festival_server

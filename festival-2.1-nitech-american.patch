@@ -1,6 +1,5 @@
-diff -p -up festival/lib/email-mode.scm.orig festival/lib/email-mode.scm
---- festival/lib/email-mode.scm.orig	2010-04-19 18:09:31.000000000 +0200
-+++ festival/lib/email-mode.scm	2010-12-06 10:16:06.000000000 +0100
+--- festival/lib/email-mode.scm.0001~	2017-09-04 17:54:08.000000000 +0200
++++ festival/lib/email-mode.scm	2017-12-25 23:32:51.401329977 +0100
 @@ -40,7 +40,7 @@
  (define (email_init_func)
   "(email_init_func)
@@ -26,50 +25,22 @@ diff -p -up festival/lib/email-mode.scm.orig festival/lib/email-mode.scm
       (email_previous_t2w_func token name))))
  
  (set! tts_text_modes
-diff -p -up festival/lib/sable-mode.scm.orig festival/lib/sable-mode.scm
---- festival/lib/sable-mode.scm.orig	2010-04-19 18:14:44.000000000 +0200
-+++ festival/lib/sable-mode.scm	2010-12-06 10:21:17.000000000 +0100
-@@ -222,26 +222,26 @@ SABLE mode token specific analysis."
-    (xxml_synth UTT)
-    (set! sable_speaker_stack (cons sable_current_speaker sable_speaker_stack))
-    (cond
--    ((not equal? sable_current_language 'britishenglish)
-+    ((not equal? sable_current_language 'americanenglish)
-      (print "SABLE: choosen unknown voice, current voice unchanged"))
-     ((equal? (car (xxml_attval "NAME" ATTLIST)) 'male1)
--     (set! sable_current_speaker 'voice_kal_diphone)
--     (voice_kal_diphone))
-+     (set! sable_current_speaker 'voice_nitech_us_bdl_arctic_hts)
-+     (voice_nitech_us_bdl_arctic_hts))
-     ((equal? (car (xxml_attval "NAME" ATTLIST)) 'male2)
--     (set! sable_current_speaker 'voice_cmu_us_rms_cg)
--     (voice_cmu_us_rms_cg))
-+     (set! sable_current_speaker 'voice_nitech_us_rms_arctic_hts)
-+     (voice_nitech_us_rms_arctic_hts))
-     ((equal? (car (xxml_attval "NAME" ATTLIST)) 'male3)
--     (set! sable_current_speaker 'voice_ked_diphone)
--     (voice_ked_diphone))
-+     (set! sable_current_speaker 'voice_nitech_us_awb_arctic_hts)
-+     (voice_nitech_us_awb_arctic_hts))
-     ((equal? (car (xxml_attval "NAME" ATTLIST)) 'male4)
--     (set! sable_current_speaker 'voice_rab_diphone)
--     (voice_rab_diphone))
-+     (set! sable_current_speaker 'voice_nitech_us_jmk_arctic_hts)
-+     (voice_nitech_us_jmk_arctic_hts))
-     ((equal? (car (xxml_attval "NAME" ATTLIST)) 'male5)
--     (set! sable_current_speaker 'voice_cmu_us_awb_cg)
--     (voice_cmu_us_awb_cg))
-+     (set! sable_current_speaker 'voice_kal_diphone)
-+     (voice_kal_diphone))
-     ((equal? (car (xxml_attval "NAME" ATTLIST)) 'female1)
--     (set! sable_current_speaker 'voice_cmu_us_slt_arctic_hts)
--     (voice_us1_mbrola))
-+     (set! sable_current_speaker 'voice_nitech_us_slt_arctic_hts)
-+     ((voice_nitech_us_slt_arctic_hts))
-    (t
-       (set! sable_current_speaker (intern (string-append "voice_" (car (xxml_attval "NAME" ATTLIST)))))
-       (eval (list sable_current_speaker))))
-@@ -458,7 +458,7 @@ SABLE mode token specific analysis."
+--- festival/lib/sable-mode.scm.0001~	2017-09-04 17:54:08.000000000 +0200
++++ festival/lib/sable-mode.scm	2017-12-25 23:40:20.637195449 +0100
+@@ -107,10 +107,10 @@
+   (set! sable_vol_context nil)
+   (set! sable_vol_type 'no_change)
+   (set! sable_vol_factor 1.0)
+-  (set! sable_current_language 'britishenglish)
++  (set! sable_current_language 'americanenglish)
+   (set! sable_unsupported_language nil)
+   (set! sable_language_stack nil)
+-  (set! sable_current_speaker 'voice_kal_diphone)
++  (set! sable_current_speaker 'voice_nitech_us_bdl_arctic_hts)
+   (set! sable_speaker_stack nil)
+ )
+ 
+@@ -468,7 +468,7 @@ SABLE mode token specific analysis."
    "(sable_init_func)
  Initialisation for SABLE mode"
    (sable_init_globals)
