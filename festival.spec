@@ -86,7 +86,7 @@ applications using %{name}.
  
 %prep
 %setup -qn %{name} -a 1 -a 4
-%apply_patches
+%autopatch -p1
 
 # zero length
 rm festdoc-1.4.2/speech_tools/doc/index_html.jade
