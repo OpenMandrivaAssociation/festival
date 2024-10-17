@@ -13,7 +13,7 @@ Version:	2.5.0
 Release:	3
 License:	BSD
 Group:		Sound
-Url:		http://www.cstr.ed.ac.uk/projects/festival/
+Url:		https://www.cstr.ed.ac.uk/projects/festival/
 Source0:	http://festvox.org/packed/festival/%(echo %{version} |cut -d. -f1-2)/%{name}-%{version}-release.tar.gz
 Source1:	http://festvox.org/packed/festival/%{docversion}/festdoc-%{docversion}.tar.bz2
 Source2:	siteinit.scm
