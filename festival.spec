@@ -51,6 +51,11 @@ Patch12:	festival-2.1-bettersonamehack.patch
 Patch15:	festival-finnish.patch
 # Look for siteinit and sitevars in /etc/festival
 Patch16:	festival-1.96-etcsiteinit.patch
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:	perl
 BuildRequires:	speech_tools-devel >= 2.5
 BuildRequires:	pkgconfig(ncurses)
